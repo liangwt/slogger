@@ -28,11 +28,7 @@ func main() {
 	c := `
     {
       "logger": {
-        "levels": [
-          "DEBUG",
-          "ERROR",
-          "INFO"
-        ]
+        "levels": ["DEBUG", "ERROR", "INFO"]
       },
       "appender": {
         "out": "file",
