@@ -2,6 +2,8 @@ package main
 
 import (
 	"github.com/liangwt/slogger"
+	"fmt"
+	"os"
 )
 
 func main() {
@@ -11,7 +13,7 @@ func main() {
         "levels": ["DEBUG", "ERROR","INFO"]
       },
       "appender": {
-        "out": "file",
+        "out": "console",
         "fileAppender": {
           "filename": {
             "ALL": "./example/ALL_%T[20060102_15].log",
@@ -20,11 +22,18 @@ func main() {
         }
       },
       "formater": {
-        "format": "default"
+        "format": "separation",
+        "separationFormater": {
+          "delimiter": "|"
+        }
       }
     }
 	`
-	config, _ := slogger.NewConfig([]byte(c))
+	config, err := slogger.NewConfig([]byte(c))
+	if err !=nil{
+		fmt.Println(err)
+		os.Exit(1)
+	}
 
 	logger := slogger.InitLogger(config)
 	logger.ERROR("this is an error message: %s", "ERROR")

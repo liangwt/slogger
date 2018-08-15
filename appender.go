@@ -21,7 +21,7 @@ func NewConsoleAppender(formater *Formater) *ConsoleAppender {
 
 func (appender *ConsoleAppender) out(e *Event) {
 	formatString := (*appender.formater).format(e)
-	os.Stdout.WriteString(formatString)
+	os.Stdout.WriteString(formatString + "\n")
 }
 
 func (appender *ConsoleAppender) SetFormater(formater *Formater) {
@@ -43,7 +43,7 @@ func NewFileAppender(formater *Formater, fileNames map[Level]string) *FileAppend
 func (appender *FileAppender) out(e *Event) {
 	if v, ok := appender.fileNames[ALL]; ok {
 		f, _ := os.OpenFile(v, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0777)
-		f.WriteString((*appender.formater).format(e))
+		f.WriteString((*appender.formater).format(e) + "\n")
 		defer f.Close()
 	}
 	if v, ok := appender.fileNames[e.Level]; ok {

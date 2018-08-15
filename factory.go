@@ -10,7 +10,13 @@ func InitLogger(conf *Config) *Logger {
 	// init formater
 	var formater Formater
 	switch conf.Formater.Format {
+	case "json":
+		formater = NewJsonFormater()
+	case "separation":
+		formater = NewSeparationFormater(conf.Formater.SeparationFormater.Delimiter)
 	case "default":
+		formater = NewDefaultFormater()
+	default:
 		formater = NewDefaultFormater()
 	}
 

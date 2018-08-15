@@ -3,7 +3,21 @@ package slogger
 import "encoding/json"
 
 func NewConfig(c []byte) (*Config, error) {
-	config := new(Config)
+	// default config
+	config := &Config{
+		Logger: &LoggerConfig{
+			Levels: []string{"TRACE", "DEBUG", "INFO", "WARN", "ERROR", "FATAL"},
+		},
+		Appender: &AppenderConfig{
+			Out: "console",
+		},
+		Formater: &FormaterConfig{
+			Format: "default",
+			SeparationFormater: &SeparationFormaterConfig{
+				Delimiter: "|",
+			},
+		},
+	}
 	err := json.Unmarshal(c, config)
 	if err != nil {
 		return nil, err
@@ -33,7 +47,12 @@ type FileAppenderConfig struct {
 }
 
 type FormaterConfig struct {
-	Format string `json:"format,omitempty"`
+	Format             string                    `json:"format,omitempty"`
+	SeparationFormater *SeparationFormaterConfig `json:"separationFormater,omitempt"`
+}
+
+type SeparationFormaterConfig struct {
+	Delimiter string `json:"delimiter,omitempty"`
 }
 
 type Config struct {

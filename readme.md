@@ -2,7 +2,7 @@
 
 ### Introduction
 
-Easy-to-use event log system that can implement output specific event to a file or console with a simple configuration while meeting custom formats
+Easy-to-use event log tool that can implement output specific event to a file or console with a simple configuration while meeting custom formats
 
 ### Features
 
@@ -21,11 +21,11 @@ Easy-to-use event log system that can implement output specific event to a file 
 package main
 
 import (
-	"github.com/liangwt/slogger"
+  "github.com/liangwt/slogger"
 )
 
 func main() {
-	c := `
+  c := `
     {
       "logger": {
         "levels": ["DEBUG", "ERROR", "INFO"]
@@ -44,13 +44,13 @@ func main() {
       }
     }
 	`
-	config, _ := slogger.NewConfig([]byte(c))
+  config, _ := slogger.NewConfig([]byte(c))
 
-	logger := slogger.InitLogger(config)
-	logger.ERROR("this is an error message: %s", "ERROR")
-	logger.INFO("this is an info message: %s", "INFO")
-	logger.TRACE("this is an trace message: %s", "TRACE")
-	logger.DEBUG("this is an debug message: %s", "DEBUG")
+  logger := slogger.InitLogger(config)
+  logger.ERROR("this is an error message: %s", "ERROR")
+  logger.INFO("this is an info message: %s", "INFO")
+  logger.TRACE("this is an trace message: %s", "TRACE")
+  logger.DEBUG("this is an debug message: %s", "DEBUG")
 }
 
 ```
@@ -65,6 +65,37 @@ func main() {
   Otherside, if the `appender.fileAppender.filename.ALL` field contains "%E", all events specified in `logger.levels` will be logged to the different file named by event and also will be logged to a file named "ALL".
 
   Note that if you not only set "ALL" field but also set each event, the latter will overwrite the "ALL".
+
+#### `formater.format` Set the output format
+
+
+- defult
+
+  example:
+
+  [2018/8/15 09:44:08] [ERROR]: this is an error message: ERROR
+
+- json
+
+  example:
+
+  {"timeStamp":1534297646,"level":2,"LevelDesc":"INFO","message":"this is an info message: INFO"}
+
+- separation
+  
+  example: 
+
+  ```json
+  "formater": {
+    "format": "separation",
+    "separationFormater": {
+      "delimiter": "|"
+    }
+  }
+  ```
+
+  2018/8/15 22:02:45|2|INFO|this is an info message: INFO
+
 
 ### Todo
 - http appender
