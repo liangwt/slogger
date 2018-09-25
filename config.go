@@ -2,27 +2,30 @@ package slogger
 
 import "encoding/json"
 
+// DefaultConfig default confi
+var DefaultConfig = Config{
+	Logger: &LoggerConfig{
+		Levels: []string{"TRACE", "DEBUG", "INFO", "WARN", "ERROR", "FATAL"},
+	},
+	Appender: &AppenderConfig{
+		Out: "console",
+	},
+	Formater: &FormaterConfig{
+		Format: "default",
+		SeparationFormater: &SeparationFormaterConfig{
+			Delimiter: "|",
+		},
+	},
+}
+
+// NewConfig 初始化配置
 func NewConfig(c []byte) (*Config, error) {
-	// default config
-	config := &Config{
-		Logger: &LoggerConfig{
-			Levels: []string{"TRACE", "DEBUG", "INFO", "WARN", "ERROR", "FATAL"},
-		},
-		Appender: &AppenderConfig{
-			Out: "console",
-		},
-		Formater: &FormaterConfig{
-			Format: "default",
-			SeparationFormater: &SeparationFormaterConfig{
-				Delimiter: "|",
-			},
-		},
-	}
-	err := json.Unmarshal(c, config)
+	config := DefaultConfig
+	err := json.Unmarshal(c, &config)
 	if err != nil {
 		return nil, err
 	}
-	return config, nil
+	return &config, nil
 }
 
 type LoggerConfig struct {
